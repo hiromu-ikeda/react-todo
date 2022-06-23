@@ -1,5 +1,4 @@
 import react, {useState} from "react"
-import logo from './logo.svg';
 import './App.css';
 
 const App = () => {
@@ -13,6 +12,25 @@ const App = () => {
     setIncompleteTodos(newTodos);
     setTodoText("");
   }
+  const onClickDelete = (index) => {
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index, 1);
+    setIncompleteTodos(newTodos);
+  }
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    const completeTodo = newIncompleteTodos.splice(index, 1); 
+    const newCompleteTodos = [...completeTodos, completeTodo]
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+  }
+  const onClickReturn = (index) => {
+    const newCompleteTodos = [...completeTodos]
+    const returnTodo = newCompleteTodos.splice(index, 1);
+    const newIncompleteTodos = [...incompleteTodos, returnTodo];
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+  }
   return (
     <>
       <div className="input-area">
@@ -22,12 +40,12 @@ const App = () => {
       <div className="incomplete-area">
         <p className="title">未完了のtodo</p>
         <ul>
-          {incompleteTodos.map((todo) => {
+          {incompleteTodos.map((todo, index) => {
             return (
               <div key={todo} className='list-row'>
               <li>{todo}</li>
-              <button>完了</button>
-              <button>削除</button>
+              <button onClick={() => onClickComplete(index)}>完了</button>
+              <button onClick={() => onClickDelete(index)}>削除</button>
           </div>
             )
           })}
@@ -36,11 +54,11 @@ const App = () => {
       <div className="complete-area">
         <p className='title'>完了のtodo</p>
         <ul>
-          {completeTodos.map((todo) => {
+          {completeTodos.map((todo, index) => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>戻す</button>
+                <button onClick={() => onClickReturn(index)}>戻す</button>
               </div>
             )
           })}

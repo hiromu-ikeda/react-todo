@@ -11,6 +11,11 @@ const App = () => {
   const onChangeTodoText = (event) => setTodoText(event.target.value);
   const onClickAdd = () => {
     if (todoText === "") return;
+    if (incompleteTodos.length >= 5) {
+      alert("未完了のTODOが5件になっています。\n未完了のTODOを完了してから追加してください。")
+      setTodoText("");
+      return;
+    }
     const newTodos = [...incompleteTodos, todoText]
     setIncompleteTodos(newTodos);
     setTodoText("");
